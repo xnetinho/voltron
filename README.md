@@ -44,7 +44,7 @@ Para instalar o serviço Piper TTS, você pode utilizar a template do EasyPanel:
 Aqui está um exemplo de como você pode fazer uma requisição para gerar áudio a partir de texto:
 
 ```bash
-curl -X POST http://localhost:5000/audio \
+curl -X POST http://meu-dominio.com/audio \
 -H "Content-Type: application/json" \
 -d '{
     "texto": "Olá, este é um teste de geração de áudio.",
