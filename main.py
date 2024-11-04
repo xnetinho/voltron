@@ -4,12 +4,13 @@ import speech_recognition as sr
 from pydub import AudioSegment
 import io
 import logging
+import subprocess
+from pathlib import Path
 import threading
 import time
 import base64
 from datetime import datetime
 import os
-from dimits import Dimits
 
 app = Flask(__name__)
 
@@ -114,12 +115,13 @@ def generate_audio():
 
     saida_param = Path(saida_param).stem
     output_path = output_dir / f"{saida_param}.{formato_param}"
-    modelo = "pt_BR-faber-medium" if voz_param == "faber" else "pt_BR-edresson-low"
+    modelo = "pt_BR-faber-medium" if voz_param == "faber" else "pt_BR-edresson-low" if voz_param == "edresson" else None
+
+    command = f"echo '{texto_param}' | piper --model {modelo} --output_file '{output_path}'"
 
     try:
-        # Inicializa o Dimits com o modelo desejado
-        dt = Dimits(modelo)
-        dt.text_2_speech(texto_param, output_path=output_path)
+        subprocess.run(command, shell=True, capture_output=True, text=True, check=True)
+        logging.info("Comando executado com sucesso.")
 
         if base64_param == "true":
             with open(output_path, "rb") as audio_file:
@@ -141,11 +143,12 @@ def generate_audio():
                 "Content-Disposition": f"inline; filename={saida_param}.{formato_param}"
             }
 
-    except Exception as e:
-        logging.error(f"Erro ao gerar o áudio: {e}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Erro ao executar o comando: {e.stderr}")
         return jsonify({
-            "error": str(e)
-        }), 500
+            "output": e.stdout,
+            "error": e.stderr
+        }), 400
 
 def delete_files_after_download(file_path, delay=60):
     time.sleep(delay)
