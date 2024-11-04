@@ -49,8 +49,7 @@ curl -X POST http://localhost:5000/audio \
 -d '{
     "texto": "Olá, este é um teste de geração de áudio.",
     "saida": "teste_audio",
-    "base64": "true",
-    "formato": "wav" ##Opcional
+    "base64": "true"
 }'
 
 ```
