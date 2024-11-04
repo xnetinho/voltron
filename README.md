@@ -45,13 +45,14 @@ Aqui está um exemplo de como você pode fazer uma requisição para gerar áudi
 
 ```bash
 curl -X POST http://localhost:5000/audio \
--H "Content-Type: application/json" \
--d '{
-    "texto": "Olá, este é um teste de geração de áudio.",
-    "saida": "teste_audio",
-    "base64": "true",
-    "formato": "wav" ##Opcional
-}'
+     -H "Content-Type: application/json" \
+     -d '{
+           "texto": "Olá, este é um teste de geração de áudio.",
+           "saida": "teste_audio",
+           "voz": "faber",
+           "base64": "false",
+           "formato": "mp3"
+         }'
 
 ```
 
@@ -59,5 +60,6 @@ curl -X POST http://localhost:5000/audio \
 
 - **texto**: O texto que será convertido em áudio.
 - **saida**: O nome do arquivo de saída (sem extensão).
+- **voz**: Voz escolhida (faber ou edresson).
 - **base64**: Define se o áudio gerado deve ser retornado como uma string Base64. Use `"true"` para ativar e `"false"` para desativar.
-
+- **formato**: Formato do arquivo de áudio (como mp3 ou wav).
