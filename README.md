@@ -67,9 +67,6 @@ curl -X POST http://meu-dominio.com/audio \
 
 ### Melhorias que serão adicionadas
 
-- [SEM ESTADO] Criar uma rota para enviar o texto e retornar o audio, após isto ser apagado;
-
-- [SEM ESTADO] Criar uma rota para enviar o texto e retornar o id do audio a ser gerado, assim como enviar o webhook que deve ser acionado assim que o audio for gerado para enviar o arquivo;
 
 - Criar um serviço para apagar os audios que foram gerados e estão dentro do tempo configurado para serem apagados ou que foram gerados, mas por algum motivo não foram apagados conforme planejado;
 
