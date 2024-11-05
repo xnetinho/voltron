@@ -4,4 +4,4 @@ Werkzeug==2.2.2
 pydub==0.25.1
 gunicorn==20.1.0
 piper-tts==1.1.0
-piper-phonemize==1.0.0
+piper-phonemize
