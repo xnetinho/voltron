@@ -9,7 +9,8 @@ import time
 import base64
 from datetime import datetime
 import os
-from dimits import Dimits
+from pathlib import Path
+import subprocess
 
 app = Flask(__name__)
 
@@ -116,10 +117,11 @@ def generate_audio():
     output_path = output_dir / f"{saida_param}.{formato_param}"
     modelo = "pt_BR-faber-medium" if voz_param == "faber" else "pt_BR-edresson-low"
 
+    # Gera o áudio usando Piper diretamente
+    command = f"echo '{texto_param}' | piper --model {modelo} --output_file '{output_path}'"
     try:
-        # Inicializa o Dimits com o modelo desejado
-        dt = Dimits(modelo)
-        dt.text_2_speech(texto_param, output_path=output_path)
+        subprocess.run(command, shell=True, check=True)
+        logging.info("Comando de geração de áudio executado com sucesso.")
 
         if base64_param == "true":
             with open(output_path, "rb") as audio_file:
@@ -141,8 +143,8 @@ def generate_audio():
                 "Content-Disposition": f"inline; filename={saida_param}.{formato_param}"
             }
 
-    except Exception as e:
-        logging.error(f"Erro ao gerar o áudio: {e}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Erro ao executar o comando: {e}")
         return jsonify({
             "error": str(e)
         }), 500
